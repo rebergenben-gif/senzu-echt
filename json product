@@ -1,0 +1,5 @@
+[
+  { "name": "3x3 Speedcube Pro", "price": 29.99, "category": "Bestsellers", "rating": 5, "image": "img/cube1.jpg" },
+  { "name": "4x4 Speedcube Advanced", "price": 39.99, "category": "Nieuw binnen", "rating": 4, "image": "img/cube2.jpg" },
+  { "name": "Pyraminx Cube", "price": 19.99, "category": "Bestsellers", "rating": 4, "image": "img/cube3.jpg" }
+]
