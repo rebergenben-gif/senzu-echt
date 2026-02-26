@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Senzu</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h1>Senzu</h1>
+  <div id="cart">🛒 <span id="cart-count">0</span></div>
+</header>
+
+<main>
+  <h2>Bestsellers</h2>
+  <section id="bestsellers" class="grid"></section>
+
+  <h2>Nieuw binnen</h2>
+  <section id="nieuw" class="grid"></section>
+</main>
+
+<h2>Login (alleen voor ons)</h2>
+<input type="text" id="username" placeholder="Gebruikersnaam">
+<input type="password" id="password" placeholder="Wachtwoord">
+<button onclick="login()">Login</button>
+
+<script src="script.js"></script>
+</body>
+</html>
