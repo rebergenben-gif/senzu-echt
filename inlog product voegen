@@ -1,0 +1,47 @@
+let cart = [];
+
+async function loadProducts() {
+    const res = await fetch("/products");
+    const products = await res.json();
+
+    const bestsellers = document.getElementById("bestsellers");
+    const nieuw = document.getElementById("nieuw");
+    bestsellers.innerHTML = "";
+    nieuw.innerHTML = "";
+
+    products.forEach((p,i)=>{
+        const stars = "★".repeat(p.rating)+"☆".repeat(5-p.rating);
+        const card = document.createElement("div");
+        card.className="product";
+        card.innerHTML=`
+            <img src="${p.image}" alt="${p.name}">
+            <h3>${p.name}</h3>
+            <div class="stars">${stars}</div>
+            <p>€${p.price}</p>
+            <button onclick="addToCart(${i})">Toevoegen</button>
+        `;
+        if(p.category.toLowerCase()=="bestsellers") bestsellers.appendChild(card);
+        else if(p.category.toLowerCase()=="nieuw binnen") nieuw.appendChild(card);
+    });
+}
+
+function addToCart(index){
+    cart.push(index);
+    document.getElementById("cart-count").innerText = cart.length;
+    alert("Product toegevoegd aan winkelwagen!");
+}
+
+async function login(){
+    const username=document.getElementById("username").value;
+    const password=document.getElementById("password").value;
+    const res=await fetch("/login",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({username,password})
+    });
+    const data=await res.json();
+    if(data.success) window.location.href="admin.html";
+    else alert("Verkeerde login");
+}
+
+loadProducts();
