@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Senzu Admin</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h1>Senzu Admin</h1>
+</header>
+
+<main>
+  <h2>Product toevoegen</h2>
+  <input type="text" id="name" placeholder="Productnaam">
+  <input type="number" id="price" placeholder="Prijs (€)">
+  <input type="text" id="category" placeholder="Categorie (Bestsellers/Nieuw binnen)">
+  <input type="number" id="rating" placeholder="Rating (1-5)">
+  <input type="text" id="image" placeholder="Afbeeldingspad (bijv. img/cube1.jpg)">
+  <button onclick="addProduct()">Toevoegen</button>
+
+  <h2>Huidige producten</h2>
+  <div id="productList" class="grid"></div>
+</main>
+
+<script>
+async function loadProducts() {
+  const res = await fetch("/products");
+  const products = await res.json();
+  const container = document.getElementById("productList");
+  container.innerHTML = "";
+  products.forEach((p,i)=>{
+    const stars = "★".repeat(p.rating)+"☆".repeat(5-p.rating);
+    const card = document.createElement("div");
+    card.className="product";
+    card.innerHTML=`
+      <img src="${p.image}" alt="${p.name}">
+      <h3>${p.name}</h3>
+      <div class="stars">${stars}</div>
+      <p>€${p.price}</p>
+    `;
+    container.appendChild(card);
+  });
+}
+
+async function addProduct() {
+  const name = document.getElementById("name").value;
+  const price = parseFloat(document.getElementById("price").value);
+  const category = document.getElementById("category").value;
+  const rating = parseInt(document.getElementById("rating").value);
+  const image = document.getElementById("image").value;
+
+  await fetch("/add-product", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, price, category, rating, image })
+  });
+
+  alert("Product toegevoegd!");
+  loadProducts();
+}
+
+loadProducts();
+</script>
+
+</body>
+</html>
