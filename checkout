@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Senzu Checkout</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h1>Senzu Checkout</h1>
+</header>
+
+<main>
+  <h2>Winkelwagen</h2>
+  <div id="checkoutItems"></div>
+  <p>Totaal: €<span id="total">0</span></p>
+
+  <h2>Bestelgegevens</h2>
+  <input type="text" id="name" placeholder="Naam">
+  <input type="text" id="address" placeholder="Adres">
+  <input type="email" id="email" placeholder="E-mail">
+  <button onclick="placeOrder()">Bestelling Plaatsen</button>
+</main>
+
+<script>
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+async function loadCart() {
+  const res = await fetch("/products");
+  const products = await res.json();
+  const container = document.getElementById("checkoutItems");
+  container.innerHTML = "";
+  let total = 0;
+  cart.forEach(i=>{
+    const p = products[i];
+    total += p.price;
+    const div = document.createElement("div");
+    div.innerHTML=`${p.name} - €${p.price}`;
+    container.appendChild(div);
+  });
+  document.getElementById("total").innerText = total.toFixed(2);
+}
+
+function placeOrder() {
+  const name = document.getElementById("name").value;
+  const address = document.getElementById("address").value;
+  const email = document.getElementById("email").value;
+
+  if(!name || !address || !email){ alert("Vul alle velden in!"); return; }
+  alert(`Bedankt ${name}! Je bestelling is geplaatst.`);
+  localStorage.removeItem("cart");
+  window.location.href = "index.html";
+}
+
+loadCart();
+</script>
+
+</body>
+</html>
